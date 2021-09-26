@@ -1,7 +1,7 @@
 # MineScreen
 
 [![license](https://img.shields.io/github/license/kiipy/MineScreen?style=for-the-badge&color=dd7744)](./LICENSE)
-[![wiki](https://img.shields.io/badge/documentation-wiki-x?style=for-the-badge&color=cc7788)](https://wiki.minestom.net/)
+[![wiki](https://img.shields.io/badge/documentation-wiki-x?style=for-the-badge&color=cc7788)](https://github.com/kiipy/MineScreen/wiki)
 
 Create Minestom GUIs using an easy to use api.
 
