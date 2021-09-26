@@ -8,13 +8,30 @@ Create Minestom GUIs using an easy to use api.
 # Installing
 ```groovy
 repositories {
-    ...
+    mavenCentral()
+
+    // Minestom repos
+    maven { url 'https://repo.spongepowered.org/maven' }
     maven { url 'https://jitpack.io' }
+
+    // Github release
+    ivy {
+        url 'https://github.com/'
+
+        patternLayout {
+            artifact '/[organisation]/[module]/releases/download/latest/[revision].jar'
+        }
+
+        metadataSources { artifact() }
+    }
 }
 
 dependencies {
-    ...
-    implementation 'com.github.kiipy:MineScreen:-SNAPSHOT'
+    // Minestom (new block api)
+    implementation 'com.github.Minestom:Minestom:872a49d'
+
+    // MineScreen
+    implementation 'kiipy:MineScreen:MineScreen-1.0.1-dev'
 }
 ```
 
