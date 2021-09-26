@@ -48,8 +48,7 @@ public class ImageComponent extends Component {
             }
         } else {
             for (int pixel = 0; pixel + 2 < bytes.length; pixel += 3) {
-                int argb = 0;
-                argb += -16777216; // 255 alpha
+                int argb = -16777216; // 255 alpha
                 argb += (((int) bytes[pixel + 2] & 0xff) << 16); // red
                 argb += (((int) bytes[pixel + 1] & 0xff) << 8); // green
                 argb += ((int) bytes[pixel] & 0xff); // blue

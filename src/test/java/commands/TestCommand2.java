@@ -33,6 +33,6 @@ public class TestCommand2 extends Command {
 
 		packet.data[0] = 50;
 
-		player.sendPacket(packet);
+		player.getPlayerConnection().sendPacket(packet);
 	}
 }

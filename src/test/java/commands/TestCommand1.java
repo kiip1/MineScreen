@@ -39,6 +39,6 @@ public class TestCommand1 extends Command {
 				 n-- > 0; rnd >>= Byte.SIZE)
 				packet.data[i++] = (byte)rnd;
 
-		player.sendPacket(packet);
+		player.getPlayerConnection().sendPacket(packet);
 	}
 }
