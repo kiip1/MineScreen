@@ -1,6 +1,4 @@
 import commands.DemoInstance;
-import commands.TestCommand1;
-import commands.TestCommand2;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
@@ -15,8 +13,6 @@ public class Test {
         MineScreen.init();
 
         MinecraftServer.getCommandManager().register(new GuiCommand());
-        MinecraftServer.getCommandManager().register(new TestCommand1());
-        MinecraftServer.getCommandManager().register(new TestCommand2());
         MinecraftServer.getGlobalEventHandler().addListener(PlayerLoginEvent.class, event -> {
             DemoInstance demoInstance = new DemoInstance();
             MinecraftServer.getInstanceManager().registerInstance(demoInstance);
