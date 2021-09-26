@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group 'nl.kiipdevelopment'
+version '1.0.0-dev'
+compileJava.options.encoding 'UTF-8'
+
+repositories {
+    maven { url 'https://repo.spongepowered.org/maven' }
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation "org.jetbrains:annotations:$annotationVersion"
+    implementation "com.github.Minestom:Minestom:$minestomVersion"
+    implementation "com.github.EmortalMC:Rayfast:$rayfastVersion"
+}
