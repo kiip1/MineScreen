@@ -2,7 +2,7 @@ package nl.kiipdevelopment.minescreen.util;
 
 import org.jetbrains.annotations.ApiStatus;
 
-// Stolen from Minestom
+// Stolen from Minestom (https://github.com/Minestom/Minestom/)
 @ApiStatus.Internal
 public final class MathUtils {
     private MathUtils() {}

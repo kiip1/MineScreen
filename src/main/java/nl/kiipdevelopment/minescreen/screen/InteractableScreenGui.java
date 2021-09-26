@@ -1,9 +1,5 @@
 package nl.kiipdevelopment.minescreen.screen;
 
-import dev.emortal.rayfast.area.Intersection;
-import dev.emortal.rayfast.area.area3d.Area3dRectangularPrism;
-import dev.emortal.rayfast.vector.Vector;
-import dev.emortal.rayfast.vector.Vector3d;
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.coordinate.Vec;
@@ -12,6 +8,7 @@ import net.minestom.server.event.player.PlayerHandAnimationEvent;
 import nl.kiipdevelopment.minescreen.component.Component;
 import nl.kiipdevelopment.minescreen.component.Interactable;
 import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
+import nl.kiipdevelopment.minescreen.util.Intersection3dUtils;
 import nl.kiipdevelopment.minescreen.util.MathUtils;
 
 import java.util.ArrayList;
@@ -19,7 +16,7 @@ import java.util.List;
 
 public class InteractableScreenGui extends ScreenGui {
 	private final List<Mouse> mice = new ArrayList<>();
-	private final Area3dRectangularPrism area;
+	private final double[] plane;
 
 	/**
 	 * Creates a new interactable screen gui.
@@ -47,36 +44,13 @@ public class InteractableScreenGui extends ScreenGui {
 			}
 		});
 
-		area = new Area3dRectangularPrism() {
-			@Override
-			public double getMinX() {
-				return -mapWidth / 2d;
-			}
-
-			@Override
-			public double getMinY() {
-				return 1;
-			}
-
-			@Override
-			public double getMinZ() {
-				return Math.max(mapWidth, mapHeight) / 2d + 1;
-			}
-
-			@Override
-			public double getMaxX() {
-				return Math.abs(getMinX());
-			}
-
-			@Override
-			public double getMaxY() {
-				return getMinY() + mapHeight;
-			}
-
-			@Override
-			public double getMaxZ() {
-				return getMinZ();
-			}
+		plane = new double[] {
+			-mapWidth / 2d,
+			1,
+			Math.max(mapWidth, mapHeight) / 2d + 1,
+			Math.abs(-mapWidth / 2d),
+			mapHeight + 1,
+			Math.max(mapWidth, mapHeight) / 2d + 1
 		};
 	}
 
@@ -122,19 +96,23 @@ public class InteractableScreenGui extends ScreenGui {
 			Pos position = player.getPosition().add(0, player.getEyeHeight() + 0.09375, 0);
 			Vec looking = player.getPosition().direction();
 
-			Vector vector = area.lineIntersection(
-				position.x(), position.y(), position.z(),
-				looking.x(), looking.y(), looking.z(),
-				Intersection.ANY
+			Vec vector = Intersection3dUtils.planeIntersection(
+				// Line
+				position.x(), position.y(), position.z(), // Position vector
+				looking.x(), looking.y(), looking.z(), // Direction vector
+				// Plane
+				plane[0], plane[1], plane[2],
+				plane[0], plane[4], plane[2],
+				plane[3], plane[4], plane[2]
 			);
 
-			if (vector instanceof Vector3d vector3d) {
+			if (vector != null) {
 				int width = map().width();
 				int height = map().height();
 
 				mice.add(new Mouse(
-					width - 1 - (int) MathUtils.clamp(vector3d.x() * 128 + width / 2f, 0, width - 1),
-					height - 1 - (int) MathUtils.clamp(vector3d.y() * 128 - 128, 0, height - 1),
+					width - 1 - (int) MathUtils.clamp(vector.x() * 128 + width / 2f, 0, width - 1),
+					height - 1 - (int) MathUtils.clamp(vector.y() * 128 - 128, 0, height - 1),
 					player
 				));
 			}

@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'nl.kiipdevelopment'
-version '1.0.0-dev'
+version '1.0.1-dev'
 compileJava.options.encoding 'UTF-8'
 
 sourceCompatibility = 17
@@ -17,7 +17,6 @@ repositories {
 dependencies {
     implementation "org.jetbrains:annotations:$annotationVersion"
     implementation "com.github.Minestom:Minestom:$minestomVersion"
-    implementation "com.github.EmortalMC:Rayfast:$rayfastVersion"
 }
 
 publishing {
