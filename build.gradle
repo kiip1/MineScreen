@@ -1,5 +1,6 @@
 plugins {
     id 'java'
+    id 'maven-publish'
 }
 
 group 'nl.kiipdevelopment'
@@ -15,4 +16,13 @@ dependencies {
     implementation "org.jetbrains:annotations:$annotationVersion"
     implementation "com.github.Minestom:Minestom:$minestomVersion"
     implementation "com.github.EmortalMC:Rayfast:$rayfastVersion"
+}
+
+publishing {
+    publications {
+        //noinspection GroovyAssignabilityCheck
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
 }

@@ -38,3 +38,6 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
+
+# User-specific stuff
+/.idea/
