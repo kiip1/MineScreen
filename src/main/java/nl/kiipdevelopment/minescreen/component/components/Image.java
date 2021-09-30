@@ -1,24 +1,19 @@
 package nl.kiipdevelopment.minescreen.component.components;
 
 import net.minestom.server.map.MapColors;
-import nl.kiipdevelopment.minescreen.component.Component;
+import nl.kiipdevelopment.minescreen.component.ScreenComponent;
 import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
-import org.jetbrains.annotations.NotNull;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 
-public class ImageComponent extends Component {
+public class Image extends ScreenComponent {
     private final BufferedImage image;
 
-    private ImageComponent(int width, int height, BufferedImage image) {
+    Image(int width, int height, BufferedImage image) {
         super(width, height);
 
         this.image = image;
-    }
-
-    public static ImageComponent of(@NotNull BufferedImage image) {
-        return new ImageComponent(image.getWidth(), image.getHeight(), image);
     }
 
     @Override

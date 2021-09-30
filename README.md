@@ -46,5 +46,5 @@ You are always welcome to contribute.
 - [ ] Hunt for bugs and fix them.
 - [ ] Center the gui to the center of the screen.
 - [ ] Improve performance of MapGraphics. 
-- [ ] Add more components.
+- [ ] Add more screenComponents.
 - [ ] Add more methods to MapGraphics.

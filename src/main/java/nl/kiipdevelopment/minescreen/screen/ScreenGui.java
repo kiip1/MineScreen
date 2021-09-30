@@ -6,7 +6,7 @@ import net.minestom.server.map.MapColors;
 import net.minestom.server.utils.time.TimeUnit;
 import net.minestom.server.utils.validate.Check;
 import nl.kiipdevelopment.minescreen.MineScreen;
-import nl.kiipdevelopment.minescreen.component.Component;
+import nl.kiipdevelopment.minescreen.component.ScreenComponent;
 import nl.kiipdevelopment.minescreen.map.Map;
 import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
 import nl.kiipdevelopment.minescreen.world.GuiInstance;
@@ -53,15 +53,15 @@ public class ScreenGui {
             .schedule();
     }
 
-    public void addComponent(Component component) {
-        addComponent(component, 0, 0);
+    public void addComponent(ScreenComponent screenComponent) {
+        addComponent(screenComponent, 0, 0);
     }
 
-    public void addComponent(Component component, int x, int y) {
-        Check.stateCondition(x + component.width() > map.width(), "{0} doesn't fit in gui.", component);
-        Check.stateCondition(y + component.height() > map.height(), "{0} doesn't fit in gui.", component);
+    public void addComponent(ScreenComponent screenComponent, int x, int y) {
+        Check.stateCondition(x + screenComponent.width() > map.width(), "{0} doesn't fit in gui.", screenComponent);
+        Check.stateCondition(y + screenComponent.height() > map.height(), "{0} doesn't fit in gui.", screenComponent);
 
-        targets.add(new Target(component, x, y));
+        targets.add(new Target(screenComponent, x, y));
     }
 
     public void updateBackground(MapColors color) {
@@ -76,11 +76,11 @@ public class ScreenGui {
         renderer.fill(background);
 
         for (Target target : targets) {
-            target.component.draw(renderer.subGraphics(
+            target.screenComponent.draw(renderer.subGraphics(
                 target.x,
                 target.y,
-                target.component.width(),
-                target.component.height()
+                target.screenComponent.width(),
+                target.screenComponent.height()
             ));
         }
     }
@@ -113,5 +113,5 @@ public class ScreenGui {
         return instance.asInstance().getPlayers();
     }
 
-    protected record Target(Component component, int x, int y) {}
+    protected record Target(ScreenComponent screenComponent, int x, int y) {}
 }
