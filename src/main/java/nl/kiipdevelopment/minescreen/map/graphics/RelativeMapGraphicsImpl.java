@@ -19,11 +19,7 @@ public class RelativeMapGraphicsImpl extends MapGraphicsImpl {
 
     @Override
     public void fill(MapColors color) {
-        fill(color.baseColor());
-    }
-
-    protected void fill(byte color) {
-        drawRectangle(color, 0, 0, width, height);
+        super.fill(color);
     }
 
     @Override
@@ -36,7 +32,7 @@ public class RelativeMapGraphicsImpl extends MapGraphicsImpl {
         endX = fixX(endX);
         endY = fixY(endY);
 
-        drawRectangle(color.baseColor(), startX, startY, endX, endY);
+        super.drawRectangle(color, startX, startY, endX, endY);
     }
 
     @Override
@@ -46,7 +42,7 @@ public class RelativeMapGraphicsImpl extends MapGraphicsImpl {
         x = fixX(x);
         y = fixY(y);
 
-        drawString(color.baseColor(), value, x, y);
+        super.drawString(color, value, x, y);
     }
 
     @Override
@@ -56,7 +52,7 @@ public class RelativeMapGraphicsImpl extends MapGraphicsImpl {
         x = fixX(x);
         y = fixY(y);
 
-        drawDot(color.baseColor(), x, y);
+        super.drawDot(color, x, y);
     }
 
     @Override

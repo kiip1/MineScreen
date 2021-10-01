@@ -1,3 +1,5 @@
+package nl.kiipdevelopment.minescreen.demo;
+
 import net.kyori.adventure.text.Component;
 import net.minestom.server.command.CommandSender;
 import net.minestom.server.command.builder.Command;
@@ -5,14 +7,10 @@ import net.minestom.server.command.builder.CommandContext;
 import net.minestom.server.command.builder.condition.Conditions;
 import net.minestom.server.entity.Player;
 import net.minestom.server.map.MapColors;
+import static nl.kiipdevelopment.minescreen.component.ScreenComponent.*;
+
 import nl.kiipdevelopment.minescreen.component.components.*;
 import nl.kiipdevelopment.minescreen.screen.InteractableScreenGui;
-
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.IOException;
-import java.net.URL;
-import java.util.Objects;
 
 public class GuiCommand extends Command {
     public GuiCommand() {
@@ -29,23 +27,15 @@ public class GuiCommand extends Command {
         // Set background color
         gui.updateBackground(MapColors.COLOR_BLACK);
 
-        // Fetch smiley image
-        BufferedImage image = null;
-        try {
-            image = ImageIO.read(new URL("https://icons.iconarchive.com/icons/custom-icon-design/pretty-office-13/128/Emoticons-icon.png"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
         // Create container
-        ContainerComponent containerComponent = ContainerComponent.column(
+        Container container = Containers.column(
             448,
             448,
-            ContainerComponent.row(
+            Containers.row(
                 448,
                 214,
-                ButtonComponent.click(
-                    RenderComponent.of(
+                Buttons.click(
+                        Renders.of(
                         128,
                         128,
                         renderer -> {
@@ -55,9 +45,9 @@ public class GuiCommand extends Command {
                     ),
                     (player1, x, y) -> player1.sendMessage(Component.text("GREEN"))
                 ),
-                SpacerComponent.of(10, 10),
-                ButtonComponent.click(
-                    RenderComponent.of(
+                Spacers.of(10, 10),
+                Buttons.click(
+                    Renders.of(
                         128,
                         128,
                         renderer -> {
@@ -67,27 +57,28 @@ public class GuiCommand extends Command {
                     ),
                     (player1, x, y) -> player1.sendMessage(Component.text("BLUE"))
                 )
-            ),
-            SpacerComponent.of(10, 10),
-            ContainerComponent.row(
-                448,
-                214,
-                ImageComponent.of(Objects.requireNonNull(image))
             )
         );
 
         // Display mouse
-        ButtonComponent mouseComponent = ButtonComponent.hover(
-            SpacerComponent.of(gui.map().width(), gui.map().height()),
+        final int cursorWidth = 5;
+        Button mouseComponent = Buttons.hover(
+            Spacers.of(gui.map().width(), gui.map().height()),
             (player1, x, y) -> {
                 for (InteractableScreenGui.Mouse mouse : gui.mouse()) {
-                    gui.mapGraphics().drawDot(MapColors.FIRE, mouse.x(), mouse.y());
+                    var graphics = gui.mapGraphics();
+                    graphics.drawRectangle(MapColors.FIRE,
+                            mouse.x() - cursorWidth,
+                            mouse.y() - cursorWidth,
+                            mouse.x() + cursorWidth,
+                            mouse.y() + cursorWidth
+                    );
                 }
             }
         );
 
         // Add the components
-        gui.addComponent(containerComponent, 64, 64);
+        gui.addComponent(container, 64, 64);
         gui.addComponent(mouseComponent);
 
         // Show the gui to the player

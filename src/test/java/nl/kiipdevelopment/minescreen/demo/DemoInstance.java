@@ -1,4 +1,4 @@
-package commands;
+package nl.kiipdevelopment.minescreen.demo;
 
 import net.minestom.server.instance.Chunk;
 import net.minestom.server.instance.ChunkGenerator;

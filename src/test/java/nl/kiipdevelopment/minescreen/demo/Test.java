@@ -1,4 +1,5 @@
-import commands.DemoInstance;
+package nl.kiipdevelopment.minescreen.demo;
+
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;

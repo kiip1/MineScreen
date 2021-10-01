@@ -23,7 +23,7 @@ public class MapGraphicsImpl implements MapGraphics {
         fill(color.baseColor());
     }
 
-    protected void fill(byte color) {
+    private void fill(byte color) {
         for (SubMap subView : gui.map().subMaps()) {
             Arrays.fill(subView.colors(), color);
         }
@@ -37,12 +37,13 @@ public class MapGraphicsImpl implements MapGraphics {
         drawRectangle(color.baseColor(), startX, startY, endX, endY);
     }
 
-    protected void drawRectangle(byte color, int startX, int startY, int endX, int endY) {
-        // This is slow
-
+    private void drawRectangle(byte color, int startX, int startY, int endX, int endY) {
+        // TODO: Optimize this somehow
         for (int x = startX; x < endX; x++) {
             for (int y = startY; y < endY; y++) {
-                drawDot(color, x, y);
+                Map.SubMapAndIndex subMapAndIndex = map.subMap(x, y);
+
+                subMapAndIndex.subMap().colors()[subMapAndIndex.index()] = color;
             }
         }
     }
@@ -55,9 +56,8 @@ public class MapGraphicsImpl implements MapGraphics {
         drawString(color.baseColor(), value, x, y);
     }
 
-    protected void drawString(byte color, String value, int x, int y) {
+    private void drawString(byte color, String value, int x, int y) {
         // TODO Implement
-
         throw new UnsupportedOperationException("MapGraphicsImpl#drawString isn't implemented yet.");
     }
 
@@ -68,7 +68,7 @@ public class MapGraphicsImpl implements MapGraphics {
         drawDot(color.baseColor(), x, y);
     }
 
-    protected void drawDot(byte color, int x, int y) {
+    private void drawDot(byte color, int x, int y) {
         Map.SubMapAndIndex subMapAndIndex = map.subMap(x, y);
 
         subMapAndIndex.subMap().colors()[subMapAndIndex.index()] = color;
@@ -80,11 +80,13 @@ public class MapGraphicsImpl implements MapGraphics {
     }
 
     private void ensureWithinBounds(int x, int y) {
-        boolean outOfBounds = x >= map.width() ||
-            x < 0 ||
-            y >= map.height() ||
-            y < 0;
+        Check.stateCondition(isInBounds(x, y), "Trying to access pixel at {0}, {1}, which is out of bounds.", x, y);
+    }
 
-        Check.stateCondition(outOfBounds, "Trying to access pixel at {0}, {1}, which is out of bounds.", x, y);
+    private boolean isInBounds(int x, int y) {
+        return x >= map.width() ||
+                x < 0 ||
+                y >= map.height() ||
+                y < 0;
     }
 }

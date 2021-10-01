@@ -5,7 +5,7 @@ import net.minestom.server.coordinate.Pos;
 import net.minestom.server.coordinate.Vec;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerHandAnimationEvent;
-import nl.kiipdevelopment.minescreen.component.Component;
+import nl.kiipdevelopment.minescreen.component.ScreenComponent;
 import nl.kiipdevelopment.minescreen.component.Interactable;
 import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
 import nl.kiipdevelopment.minescreen.util.Intersection3dUtils;
@@ -60,12 +60,12 @@ public class InteractableScreenGui extends ScreenGui {
 
     public void hover(Player player, int x, int y) {
         for (Target target : targets()) {
-            Component component = target.component();
+            ScreenComponent screenComponent = target.screenComponent();
 
-            if (component instanceof Interactable interactable) {
+            if (screenComponent instanceof Interactable interactable) {
                 if (
-                    MathUtils.isBetween(x, target.x(), component.width() + target.x()) &&
-                    MathUtils.isBetween(y, target.y(), component.height() + target.y())
+                    MathUtils.isBetween(x, target.x(), screenComponent.width() + target.x()) &&
+                    MathUtils.isBetween(y, target.y(), screenComponent.height() + target.y())
                 ) {
                     interactable.onHover(player, x - target.x(), y - target.y());
                 }
@@ -75,12 +75,12 @@ public class InteractableScreenGui extends ScreenGui {
 
     public void click(Player player, int x, int y) {
         for (Target target : targets()) {
-            Component component = target.component();
+            ScreenComponent screenComponent = target.screenComponent();
 
-            if (component instanceof Interactable interactable) {
+            if (screenComponent instanceof Interactable interactable) {
                 if (
-                    MathUtils.isBetween(x, target.x(), component.width() + target.x()) &&
-                    MathUtils.isBetween(y, target.y(), component.height() + target.y())
+                    MathUtils.isBetween(x, target.x(), screenComponent.width() + target.x()) &&
+                    MathUtils.isBetween(y, target.y(), screenComponent.height() + target.y())
                 ) {
                     interactable.onClick(player, x - target.x(), y - target.y());
                 }
