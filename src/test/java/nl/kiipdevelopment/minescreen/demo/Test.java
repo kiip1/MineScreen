@@ -7,12 +7,15 @@ import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
 import nl.kiipdevelopment.minescreen.MineScreen;
+import nl.kiipdevelopment.minescreen.demo.commands.FixCommand;
+import nl.kiipdevelopment.minescreen.demo.commands.GuiCommand;
 
 public class Test {
     public static void main(String[] args) {
         MinecraftServer minecraftServer = MinecraftServer.init();
         MineScreen.init();
 
+        MinecraftServer.getCommandManager().register(new FixCommand());
         MinecraftServer.getCommandManager().register(new GuiCommand());
         MinecraftServer.getGlobalEventHandler().addListener(PlayerLoginEvent.class, event -> {
             DemoInstance demoInstance = new DemoInstance();
