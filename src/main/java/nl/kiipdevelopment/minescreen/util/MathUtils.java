@@ -7,6 +7,15 @@ import org.jetbrains.annotations.ApiStatus;
 public final class MathUtils {
     private MathUtils() {}
 
+    public static double round(double value, int places) {
+        if (places < 0) throw new IllegalArgumentException();
+
+        final long factor = (long) Math.pow(10, places);
+        value = value * factor;
+        long tmp = Math.round(value);
+        return (double) tmp / factor;
+    }
+
     public static boolean isBetween(byte number, byte min, byte max) {
         return number >= min && number <= max;
     }

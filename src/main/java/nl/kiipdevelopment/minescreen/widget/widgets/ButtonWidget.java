@@ -1,17 +1,18 @@
-package nl.kiipdevelopment.minescreen.component.components;
+package nl.kiipdevelopment.minescreen.widget.widgets;
 
 import net.minestom.server.entity.Player;
-import nl.kiipdevelopment.minescreen.component.Interactable;
-import nl.kiipdevelopment.minescreen.component.ScreenComponent;
+import nl.kiipdevelopment.minescreen.widget.Widget;
+import nl.kiipdevelopment.minescreen.widget.AbstractWidget;
+import nl.kiipdevelopment.minescreen.widget.Interactable;
 import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
 import org.apache.logging.log4j.util.TriConsumer;
 
-public class Button extends ScreenComponent implements Interactable {
-    private final ScreenComponent child;
+public class ButtonWidget extends AbstractWidget implements Interactable {
+    private final Widget child;
     private final TriConsumer<Player, Integer, Integer> hover;
     private final TriConsumer<Player, Integer, Integer> click;
 
-    Button(ScreenComponent child, TriConsumer<Player, Integer, Integer> hover, TriConsumer<Player, Integer, Integer> click) {
+    public ButtonWidget(Widget child, TriConsumer<Player, Integer, Integer> hover, TriConsumer<Player, Integer, Integer> click) {
         super(child.width(), child.height());
 
         this.child = child;

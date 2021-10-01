@@ -1,12 +1,11 @@
-package nl.kiipdevelopment.minescreen.component;
+package nl.kiipdevelopment.minescreen.widget;
 
-import nl.kiipdevelopment.minescreen.component.components.ComponentFunctions;
 import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
 
-public abstract class ScreenComponent implements ComponentFunctions {
+public abstract class AbstractWidget implements Widget {
     private int width, height;
 
-    public ScreenComponent(int width, int height) {
+    public AbstractWidget(int width, int height) {
         this.width = width;
         this.height = height;
     }
@@ -15,7 +14,7 @@ public abstract class ScreenComponent implements ComponentFunctions {
         return width;
     }
 
-    protected void setWidth(int width) {
+    public void setWidth(int width) {
         this.width = width;
     }
 
@@ -23,7 +22,7 @@ public abstract class ScreenComponent implements ComponentFunctions {
         return height;
     }
 
-    protected void setHeight(int height) {
+    public void setHeight(int height) {
         this.height = height;
     }
 

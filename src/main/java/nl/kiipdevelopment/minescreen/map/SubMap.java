@@ -19,6 +19,8 @@ public interface SubMap {
 
     void sendPacket(Collection<Player> players);
 
+    void sendPacketUpdate(Collection<Player> players);
+
     default int index(int localX, int localY) {
         return localX + localY * width();
     }

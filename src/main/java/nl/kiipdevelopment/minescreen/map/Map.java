@@ -13,11 +13,13 @@ public interface Map {
 
     int mapHeight();
 
-    SubMap[] subMaps();
+    SubMap[] subs();
 
-    SubMapAndIndex subMap(int x, int y);
+    SubMapAndIndex sub(int x, int y);
 
     void sendPacket(Collection<Player> players);
+
+    void sendPacketUpdate(Collection<Player> players);
 
     default int index(int mapX, int mapY) {
         return mapX + mapY * mapWidth();
@@ -35,5 +37,5 @@ public interface Map {
         return y / 128;
     }
 
-    record SubMapAndIndex(SubMap subMap, int index) {}
+    record SubMapAndIndex(SubMap map, int index) {}
 }

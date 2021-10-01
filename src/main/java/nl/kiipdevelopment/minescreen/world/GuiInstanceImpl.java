@@ -68,7 +68,7 @@ public class GuiInstanceImpl extends InstanceContainer implements GuiInstance {
 
     @Override
     public void placeMaps() {
-        // TODO Center the maps
+        // TODO: Center the maps
 
         final short guiId = gui.guiId();
         final int mapWidth = gui.map().mapWidth();

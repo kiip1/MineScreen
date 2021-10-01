@@ -17,7 +17,7 @@ public final class MineScreen {
     private static MonoSupplier<ScreenGui, MapGraphics> mapGraphicsSupplier = MapGraphicsImpl::new;
     private static MonoSupplier<ScreenGui, Runnable> refreshScreenSupplier = gui -> () -> {
         gui.render(gui.mapGraphics());
-        gui.sendPacket();
+        gui.sendPacketUpdate();
     };
     private static TriSupplier<Short, Integer, Integer, Map> mapSupplier = MapImpl::new;
     private static TriSupplier<Short, Integer, Integer, Integer> mapIdSupplier = (guiId, x, y) -> (guiId << 16) + (x << 8) + y;

@@ -1,7 +1,5 @@
 package nl.kiipdevelopment.minescreen.map.graphics;
 
-import net.minestom.server.map.MapColors;
-import net.minestom.server.utils.validate.Check;
 import nl.kiipdevelopment.minescreen.screen.ScreenGui;
 
 public class RelativeMapGraphicsImpl extends MapGraphicsImpl {
@@ -18,15 +16,12 @@ public class RelativeMapGraphicsImpl extends MapGraphicsImpl {
     }
 
     @Override
-    public void fill(MapColors color) {
-        super.fill(color);
+    public void fill(byte color) {
+        drawRectangle(color, 0, 0, width, height);
     }
 
     @Override
-    public void drawRectangle(MapColors color, int startX, int startY, int endX, int endY) {
-        ensureWithinBounds(startX, startY);
-        ensureWithinBounds(endX, endY);
-
+    public void drawRectangle(byte color, int startX, int startY, int endX, int endY) {
         startX = fixX(startX);
         startY = fixY(startY);
         endX = fixX(endX);
@@ -36,9 +31,7 @@ public class RelativeMapGraphicsImpl extends MapGraphicsImpl {
     }
 
     @Override
-    public void drawString(MapColors color, String value, int x, int y) {
-        ensureWithinBounds(x, y);
-
+    public void drawString(byte color, String value, int x, int y) {
         x = fixX(x);
         y = fixY(y);
 
@@ -46,9 +39,7 @@ public class RelativeMapGraphicsImpl extends MapGraphicsImpl {
     }
 
     @Override
-    public void drawDot(MapColors color, int x, int y) {
-        ensureWithinBounds(x, y);
-
+    public void drawDot(byte color, int x, int y) {
         x = fixX(x);
         y = fixY(y);
 
@@ -56,22 +47,13 @@ public class RelativeMapGraphicsImpl extends MapGraphicsImpl {
     }
 
     @Override
-    public MapGraphics subGraphics(int x, int y, int width, int height) {
+    public MapGraphics relative(int x, int y, int width, int height) {
         x = fixX(x);
         y = fixY(y);
         width = fixX(width);
         height = fixY(height);
 
-        return new RelativeMapGraphicsImpl(gui, x, y, width, height);
-    }
-
-    private void ensureWithinBounds(int x, int y) {
-        boolean outOfBounds = x >= width ||
-            x < 0 ||
-            y >= height ||
-            y < 0;
-
-        Check.stateCondition(outOfBounds, "Trying to access pixel at {0}, {1}, which is out of bounds.", x, y);
+        return super.relative(x, y, width, height);
     }
 
     private int fixX(int x) {

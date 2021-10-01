@@ -1,4 +1,4 @@
-package nl.kiipdevelopment.minescreen.component;
+package nl.kiipdevelopment.minescreen.widget;
 
 import net.minestom.server.entity.Player;
 

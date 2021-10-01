@@ -5,8 +5,8 @@ import net.minestom.server.coordinate.Pos;
 import net.minestom.server.coordinate.Vec;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerHandAnimationEvent;
-import nl.kiipdevelopment.minescreen.component.ScreenComponent;
-import nl.kiipdevelopment.minescreen.component.Interactable;
+import nl.kiipdevelopment.minescreen.widget.Widget;
+import nl.kiipdevelopment.minescreen.widget.Interactable;
 import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
 import nl.kiipdevelopment.minescreen.util.Intersection3dUtils;
 import nl.kiipdevelopment.minescreen.util.MathUtils;
@@ -36,7 +36,7 @@ public class InteractableScreenGui extends ScreenGui {
             Player player = event.getPlayer();
 
             if (players().contains(player)) {
-                for (Mouse mouse : mouse()) {
+                for (Mouse mouse : mice()) {
                     if (mouse.owner == player) {
                         click(player, mouse.x, mouse.y);
                     }
@@ -54,18 +54,18 @@ public class InteractableScreenGui extends ScreenGui {
         };
     }
 
-    public List<Mouse> mouse() {
+    public List<Mouse> mice() {
         return mice;
     }
 
     public void hover(Player player, int x, int y) {
         for (Target target : targets()) {
-            ScreenComponent screenComponent = target.screenComponent();
+            Widget widget = target.widget();
 
-            if (screenComponent instanceof Interactable interactable) {
+            if (widget instanceof Interactable interactable) {
                 if (
-                    MathUtils.isBetween(x, target.x(), screenComponent.width() + target.x()) &&
-                    MathUtils.isBetween(y, target.y(), screenComponent.height() + target.y())
+                    MathUtils.isBetween(x, target.x(), widget.width() + target.x()) &&
+                    MathUtils.isBetween(y, target.y(), widget.height() + target.y())
                 ) {
                     interactable.onHover(player, x - target.x(), y - target.y());
                 }
@@ -75,12 +75,12 @@ public class InteractableScreenGui extends ScreenGui {
 
     public void click(Player player, int x, int y) {
         for (Target target : targets()) {
-            ScreenComponent screenComponent = target.screenComponent();
+            Widget widget = target.widget();
 
-            if (screenComponent instanceof Interactable interactable) {
+            if (widget instanceof Interactable interactable) {
                 if (
-                    MathUtils.isBetween(x, target.x(), screenComponent.width() + target.x()) &&
-                    MathUtils.isBetween(y, target.y(), screenComponent.height() + target.y())
+                    MathUtils.isBetween(x, target.x(), widget.width() + target.x()) &&
+                    MathUtils.isBetween(y, target.y(), widget.height() + target.y())
                 ) {
                     interactable.onClick(player, x - target.x(), y - target.y());
                 }
@@ -93,7 +93,7 @@ public class InteractableScreenGui extends ScreenGui {
         mice.clear();
 
         for (Player player : players()) {
-            Pos position = player.getPosition().add(0, player.getEyeHeight() + 0.09375, 0);
+            Pos position = player.getPosition().add(0, player.getEyeHeight() + 0.09375 - (player.isSneaking() ? 0.3546875 : 0), 0);
             Vec looking = player.getPosition().direction();
 
             Vec vector = Intersection3dUtils.planeIntersection(
@@ -120,7 +120,7 @@ public class InteractableScreenGui extends ScreenGui {
 
         super.render(renderer);
 
-        for (Mouse mouse : mouse()) {
+        for (Mouse mouse : mice()) {
             hover(mouse.owner, mouse.x, mouse.y);
         }
     }
