@@ -1,21 +1,25 @@
 package nl.kiipdevelopment.minescreen.widget.widgets;
 
 import net.minestom.server.entity.Player;
-import nl.kiipdevelopment.minescreen.widget.Widget;
-import nl.kiipdevelopment.minescreen.widget.AbstractWidget;
-import nl.kiipdevelopment.minescreen.widget.Interactable;
 import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
 import nl.kiipdevelopment.minescreen.util.MathUtils;
+import nl.kiipdevelopment.minescreen.widget.AbstractWidget;
+import nl.kiipdevelopment.minescreen.widget.Interactable;
+import nl.kiipdevelopment.minescreen.widget.Widget;
+import org.jetbrains.annotations.ApiStatus;
 
-public class ContainerWidget extends AbstractWidget implements Interactable {
+import java.util.List;
+
+@ApiStatus.Internal
+public final class ContainerWidget extends AbstractWidget implements Interactable {
     private final Type type;
-    private final Widget[] widgets;
+    private final List<Widget> widgets;
 
-    public ContainerWidget(Type type, int width, int height, Widget[] widgets) {
+    public ContainerWidget(Type type, int width, int height, List<Widget> widgets) {
         super(width, height);
 
         this.type = type;
-        this.widgets = widgets;
+        this.widgets = List.copyOf(widgets);
     }
 
     @Override

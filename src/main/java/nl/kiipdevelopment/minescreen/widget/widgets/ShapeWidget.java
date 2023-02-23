@@ -3,8 +3,10 @@ package nl.kiipdevelopment.minescreen.widget.widgets;
 import net.minestom.server.map.MapColors;
 import nl.kiipdevelopment.minescreen.widget.AbstractWidget;
 import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
+import org.jetbrains.annotations.ApiStatus;
 
-public class ShapeWidget extends AbstractWidget {
+@ApiStatus.Internal
+public final class ShapeWidget extends AbstractWidget {
     private final int xOffset, yOffset;
     private final Type type;
     private final MapColors color;

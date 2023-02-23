@@ -1,18 +1,21 @@
 package nl.kiipdevelopment.minescreen.widget.widgets;
 
 import net.minestom.server.entity.Player;
-import nl.kiipdevelopment.minescreen.widget.Widget;
+import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
 import nl.kiipdevelopment.minescreen.widget.AbstractWidget;
 import nl.kiipdevelopment.minescreen.widget.Interactable;
-import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
-import org.apache.logging.log4j.util.TriConsumer;
+import nl.kiipdevelopment.minescreen.widget.Widget;
+import nl.kiipdevelopment.minescreen.widget.Widget.Buttons.Click;
+import nl.kiipdevelopment.minescreen.widget.Widget.Buttons.Hover;
+import org.jetbrains.annotations.ApiStatus;
 
-public class ButtonWidget extends AbstractWidget implements Interactable {
+@ApiStatus.Internal
+public final class ButtonWidget extends AbstractWidget implements Interactable {
     private final Widget child;
-    private final TriConsumer<Player, Integer, Integer> hover;
-    private final TriConsumer<Player, Integer, Integer> click;
+    private final Hover hover;
+    private final Click click;
 
-    public ButtonWidget(Widget child, TriConsumer<Player, Integer, Integer> hover, TriConsumer<Player, Integer, Integer> click) {
+    public ButtonWidget(Widget child, Hover hover, Click click) {
         super(child.width(), child.height());
 
         this.child = child;
@@ -27,15 +30,13 @@ public class ButtonWidget extends AbstractWidget implements Interactable {
 
     @Override
     public void onHover(Player player, int x, int y) {
-        if (hover != null) {
-            hover.accept(player, x, y);
-        }
+        if (hover != null)
+            hover.hover(player, x, y);
     }
 
     @Override
     public void onClick(Player player, int x, int y) {
-        if (click != null) {
-            click.accept(player, x, y);
-        }
+        if (click != null)
+            click.click(player, x, y);
     }
 }

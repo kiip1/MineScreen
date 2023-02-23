@@ -6,30 +6,27 @@ import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerLoginEvent;
 import net.minestom.server.event.player.PlayerSpawnEvent;
+import net.minestom.server.extras.MojangAuth;
 import nl.kiipdevelopment.minescreen.MineScreen;
-import nl.kiipdevelopment.minescreen.demo.commands.FixCommand;
-import nl.kiipdevelopment.minescreen.demo.commands.GuiCommand;
+import nl.kiipdevelopment.minescreen.screen.ScreenGui;
 
-public class Test {
+public final class Test {
     public static void main(String[] args) {
         MinecraftServer minecraftServer = MinecraftServer.init();
-        MineScreen.init();
 
-        MinecraftServer.getCommandManager().register(new FixCommand());
-        MinecraftServer.getCommandManager().register(new GuiCommand());
+        MineScreen.instance().init();
+        ScreenGui gui = TestGui.init();
+
         MinecraftServer.getGlobalEventHandler().addListener(PlayerLoginEvent.class, event -> {
-            DemoInstance demoInstance = new DemoInstance();
-            MinecraftServer.getInstanceManager().registerInstance(demoInstance);
-
-            event.setSpawningInstance(demoInstance);
+            event.setSpawningInstance(gui.instance());
             event.getPlayer().setRespawnPoint(new Pos(0, 1, 0));
-        });
-        MinecraftServer.getGlobalEventHandler().addListener(PlayerSpawnEvent.class, event -> {
+        }).addListener(PlayerSpawnEvent.class, event -> {
             Player player = event.getPlayer();
-
             player.setPermissionLevel(4);
-            player.setGameMode(GameMode.CREATIVE);
+            player.setGameMode(GameMode.ADVENTURE);
+            gui.show(player);
         });
+        MojangAuth.init();
 
         minecraftServer.start("0.0.0.0", 25565);
     }

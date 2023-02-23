@@ -1,9 +1,12 @@
 package nl.kiipdevelopment.minescreen.widget;
 
 import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
+import org.jetbrains.annotations.ApiStatus;
 
+@ApiStatus.Experimental
 public abstract class AbstractWidget implements Widget {
-    private int width, height;
+    private final int width;
+    private final int height;
 
     public AbstractWidget(int width, int height) {
         this.width = width;
@@ -14,16 +17,8 @@ public abstract class AbstractWidget implements Widget {
         return width;
     }
 
-    public void setWidth(int width) {
-        this.width = width;
-    }
-
     public int height() {
         return height;
-    }
-
-    public void setHeight(int height) {
-        this.height = height;
     }
 
     public abstract void draw(MapGraphics renderer);

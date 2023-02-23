@@ -1,6 +1,7 @@
 package nl.kiipdevelopment.minescreen.map;
 
 import net.minestom.server.entity.Player;
+import net.minestom.server.network.packet.server.SendablePacket;
 import net.minestom.server.network.packet.server.play.MapDataPacket;
 import net.minestom.server.utils.PacketUtils;
 import nl.kiipdevelopment.minescreen.MineScreen;
@@ -9,16 +10,19 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 
 public class SubMapImpl implements SubMap {
-    private static MessageDigest messageDigest;
+    private static final MessageDigest DIGEST;
 
     static {
+        MessageDigest digest = null;
         try {
-            messageDigest = MessageDigest.getInstance("SHA-256");
+            digest = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
+        DIGEST = digest;
     }
 
     public final byte[] colors;
@@ -61,7 +65,7 @@ public class SubMapImpl implements SubMap {
 
     @Override
     public int id() {
-        return MineScreen.mapIdSupplier().get(guiId, mapX, mapY);
+        return MineScreen.instance().mapIdSupplier().get(guiId, mapX, mapY);
     }
 
     @Override
@@ -71,28 +75,18 @@ public class SubMapImpl implements SubMap {
 
     @Override
     public void sendPacket(Collection<Player> players) {
-        MapDataPacket packet = new MapDataPacket();
-        packet.mapId = id();
-        packet.columns = (short) width;
-        packet.rows = (short) height;
-        packet.icons = new MapDataPacket.Icon[0];
-        packet.x = (byte) 0;
-        packet.z = (byte) 0;
-        packet.data = colors;
-
-        PacketUtils.sendGroupedPacket(players, packet);
+        final SendablePacket packet = PacketUtils.allocateTrimmedPacket(new MapDataPacket(
+                id(), (byte) 1, true, false, List.of(),
+                new MapDataPacket.ColorContent((byte) width, (byte) height, (byte) 0, (byte) 0, colors)));
+        for (Player player : players)
+            player.sendPacket(packet);
     }
 
     @Override
     public void sendPacketUpdate(Collection<Player> players) {
-        byte[] hash = messageDigest.digest(colors);
-
-        if (Arrays.equals(hash, prevHash)) {
-            return;
-        } else {
-            prevHash = hash;
-        }
-
+        final byte[] hash = DIGEST.digest(colors);
+        if (Arrays.equals(hash, prevHash)) return;
+        else prevHash = hash;
         sendPacket(players);
     }
 }

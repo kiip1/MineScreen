@@ -12,11 +12,13 @@ sourceCompatibility = 17
 repositories {
     maven { url 'https://repo.spongepowered.org/maven' }
     maven { url 'https://jitpack.io' }
+    maven { url 'https://packages.jetbrains.team/maven/p/skija/maven' }
 }
 
 dependencies {
     implementation "org.jetbrains:annotations:$annotationVersion"
     implementation "com.github.Minestom:Minestom:$minestomVersion"
+    testImplementation "org.jetbrains.skija:skija-windows:$skijaVersion"
 }
 
 publishing {

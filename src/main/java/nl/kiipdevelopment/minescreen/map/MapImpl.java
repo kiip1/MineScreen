@@ -66,15 +66,13 @@ public class MapImpl implements Map {
 
     @Override
     public void sendPacket(Collection<Player> players) {
-        for (SubMap sub : subs) {
+        for (SubMap sub : subs)
             sub.sendPacket(players);
-        }
     }
 
     @Override
     public void sendPacketUpdate(Collection<Player> players) {
-        for (SubMap sub : subs) {
+        for (SubMap sub : subs)
             sub.sendPacketUpdate(players);
-        }
     }
 }

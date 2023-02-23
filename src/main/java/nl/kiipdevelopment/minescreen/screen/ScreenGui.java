@@ -2,6 +2,7 @@ package nl.kiipdevelopment.minescreen.screen;
 
 import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
+import net.minestom.server.instance.Instance;
 import net.minestom.server.map.MapColors;
 import net.minestom.server.timer.Task;
 import net.minestom.server.utils.time.TimeUnit;
@@ -47,15 +48,16 @@ public class ScreenGui {
         this.guiId = guiId;
         this.fps = fps;
 
-        map = MineScreen.mapSupplier().get(guiId, width, height);
-        guiInstance = MineScreen.guiInstanceSupplier().get(this);
-        mapGraphics = MineScreen.mapGraphicsSupplier().get(this);
+        map = MineScreen.instance().mapSupplier().get(guiId, width, height);
+        guiInstance = MineScreen.instance().guiInstanceSupplier().get(this);
+        mapGraphics = MineScreen.instance().mapGraphicsSupplier().get(this);
 
         guiInstance.placeMaps();
 
-        refreshScreenTask = MinecraftServer.getSchedulerManager().buildTask(MineScreen.refreshScreenSupplier().get(this))
-            .repeat(1000 / fps, TimeUnit.MILLISECOND)
-            .schedule();
+        refreshScreenTask = MinecraftServer.getSchedulerManager()
+                .buildTask(MineScreen.instance().refreshScreenSupplier().get(this))
+                .repeat(1000 / fps, TimeUnit.MILLISECOND)
+                .schedule();
     }
 
     public void addWidget(Widget widget) {
@@ -75,23 +77,21 @@ public class ScreenGui {
 
     public void show(Player player) {
         map.sendPacket(Collections.singleton(player));
-        player.setInstance(guiInstance.asInstance(), guiInstance.spawn());
     }
 
     @MustBeInvokedByOverriders
     public void render(MapGraphics renderer) {
-        long loopStartTime = System.nanoTime();
+        final long loopStartTime = System.nanoTime();
 
         renderer.fill(background);
 
-        for (Target target : targets) {
+        for (Target target : targets)
             target.widget.draw(renderer.relative(
                 target.x,
                 target.y,
                 target.widget.width(),
                 target.widget.height()
             ));
-        }
 
         final double loopTime = MathUtils.round((System.nanoTime() - loopStartTime) / 1_000_000D, 2);
         if (loopTime >= 1000d / fps) {
@@ -127,6 +127,10 @@ public class ScreenGui {
 
     public List<Target> targets() {
         return targets;
+    }
+
+    public Instance instance() {
+        return guiInstance.asInstance();
     }
 
     public Set<Player> players() {

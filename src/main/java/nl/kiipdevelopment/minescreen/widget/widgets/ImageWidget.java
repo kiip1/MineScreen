@@ -3,10 +3,12 @@ package nl.kiipdevelopment.minescreen.widget.widgets;
 import net.minestom.server.map.MapColors;
 import nl.kiipdevelopment.minescreen.widget.AbstractWidget;
 import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
+import org.jetbrains.annotations.ApiStatus;
 
 import java.awt.image.BufferedImage;
 
-public class ImageWidget extends AbstractWidget {
+@ApiStatus.Internal
+public final class ImageWidget extends AbstractWidget {
     private final byte[] colors;
 
     public ImageWidget(int width, int height, BufferedImage image) {

@@ -93,7 +93,7 @@ public class InteractableScreenGui extends ScreenGui {
         mice.clear();
 
         for (Player player : players()) {
-            Pos position = player.getPosition().add(0, player.getEyeHeight() + 0.09375 - (player.isSneaking() ? 0.3546875 : 0), 0);
+            Pos position = player.getPosition().add(0, player.getEyeHeight(), 0);
             Vec looking = player.getPosition().direction();
 
             Vec vector = Intersection3dUtils.planeIntersection(
@@ -120,9 +120,8 @@ public class InteractableScreenGui extends ScreenGui {
 
         super.render(renderer);
 
-        for (Mouse mouse : mice()) {
+        for (Mouse mouse : mice())
             hover(mouse.owner, mouse.x, mouse.y);
-        }
     }
 
     public record Mouse(int x, int y, Player owner) {}
