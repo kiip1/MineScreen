@@ -95,9 +95,9 @@ final class TestGui {
                     Random random = ThreadLocalRandom.current();
                     canvas.drawTriangles(
                             new Point[] {
-                                    new Point(random.nextInt(20), random.nextInt(70)),
-                                    new Point(94, 87),
-                                    new Point(46, 87)
+                                    new Point(random.nextInt(128), random.nextInt(128)),
+                                    new Point(random.nextInt(128), random.nextInt(128)),
+                                    new Point(random.nextInt(128), random.nextInt(128))
                             },
                             new int[] { 0xFFFF0000, 0xFF00FF00, 0xFF0000FF },
                             paint

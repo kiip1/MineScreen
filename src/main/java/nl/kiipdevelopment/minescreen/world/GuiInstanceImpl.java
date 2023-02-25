@@ -8,30 +8,11 @@ import net.minestom.server.instance.block.Block;
 import net.minestom.server.item.ItemStack;
 import net.minestom.server.item.Material;
 import net.minestom.server.item.metadata.MapMeta;
-import net.minestom.server.utils.NamespaceID;
-import net.minestom.server.world.DimensionType;
-import net.minestom.server.world.biomes.Biome;
-import net.minestom.server.world.biomes.BiomeEffects;
-import nl.kiipdevelopment.minescreen.MineScreen;
 import nl.kiipdevelopment.minescreen.screen.ScreenGui;
-import org.jetbrains.annotations.ApiStatus;
 
 import java.util.UUID;
 
-@ApiStatus.Internal
-public final class GuiInstanceImpl extends InstanceContainer implements GuiInstance {
-    public static final DimensionType DIMENSION_TYPE = DimensionType.builder(NamespaceID.from("gui"))
-        .ambientLight(15)
-        .fixedTime(6000L)
-        .effects("minecraft:the_nether")
-        .build();
-    public static final Biome BIOME = Biome.builder()
-        .name(NamespaceID.from("gui"))
-        .effects(BiomeEffects.builder()
-            .fogColor(0x000000)
-            .skyColor(0x000000)
-            .build())
-        .build();
+final class GuiInstanceImpl extends InstanceContainer implements GuiInstance {
 
     private final ScreenGui gui;
 
@@ -55,7 +36,7 @@ public final class GuiInstanceImpl extends InstanceContainer implements GuiInsta
 
         for (int x = 0; x < mapWidth; x++) {
             for (int y = 0; y < mapHeight; y++) {
-                final int mapId = MineScreen.instance().mapIdSupplier().get(guiId, x, y);
+                final int mapId = (guiId << 16) + (x << 8) + y;
 
                 ItemStack map = ItemStack.builder(Material.FILLED_MAP)
                     .meta(MapMeta.class, meta -> meta.mapId(mapId))
@@ -80,10 +61,5 @@ public final class GuiInstanceImpl extends InstanceContainer implements GuiInsta
     @Override
     public Instance asInstance() {
         return this;
-    }
-
-    @Override
-    public Pos spawn() {
-        return new Pos(0, 1, Math.max(gui.map().mapWidth(), gui.map().mapHeight()) / -2d);
     }
 }

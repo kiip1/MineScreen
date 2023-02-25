@@ -7,14 +7,14 @@ import net.minestom.server.entity.Player;
 import net.minestom.server.event.player.PlayerHandAnimationEvent;
 import nl.kiipdevelopment.minescreen.widget.Widget;
 import nl.kiipdevelopment.minescreen.widget.Interactable;
-import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
+import nl.kiipdevelopment.minescreen.graphics.MapGraphics;
 import nl.kiipdevelopment.minescreen.util.Intersection3dUtils;
 import nl.kiipdevelopment.minescreen.util.MathUtils;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class InteractableScreenGui extends ScreenGui {
+public final class InteractableScreenGui extends ScreenGui {
     private final List<Mouse> mice = new ArrayList<>();
     private final double[] plane;
 

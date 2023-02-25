@@ -1,8 +1,8 @@
-package nl.kiipdevelopment.minescreen.map.graphics;
+package nl.kiipdevelopment.minescreen.graphics;
 
 import nl.kiipdevelopment.minescreen.screen.ScreenGui;
 
-public class RelativeMapGraphicsImpl extends MapGraphicsImpl {
+final class RelativeMapGraphicsImpl extends MapGraphicsImpl {
     private final int x, y;
     private final int width, height;
 

@@ -1,6 +1,5 @@
 package nl.kiipdevelopment.minescreen.widget;
 
-import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Experimental
@@ -20,8 +19,6 @@ public abstract class AbstractWidget implements Widget {
     public int height() {
         return height;
     }
-
-    public abstract void draw(MapGraphics renderer);
 
     @Override
     public String toString() {

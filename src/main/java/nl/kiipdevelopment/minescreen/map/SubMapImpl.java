@@ -4,7 +4,6 @@ import net.minestom.server.entity.Player;
 import net.minestom.server.network.packet.server.SendablePacket;
 import net.minestom.server.network.packet.server.play.MapDataPacket;
 import net.minestom.server.utils.PacketUtils;
-import nl.kiipdevelopment.minescreen.MineScreen;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -12,23 +11,23 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-public class SubMapImpl implements SubMap {
+final class SubMapImpl implements SubMap {
     private static final MessageDigest DIGEST;
 
     static {
-        MessageDigest digest = null;
         try {
-            digest = MessageDigest.getInstance("SHA-256");
+            DIGEST = MessageDigest.getInstance("SHA-256");
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
-        DIGEST = digest;
     }
 
     public final byte[] colors;
     private final short guiId;
-    private final int mapX, mapY;
-    private final int width, height;
+    private final int mapX;
+    private final int mapY;
+    private final int width;
+    private final int height;
 
     private byte[] prevHash;
 
@@ -65,7 +64,7 @@ public class SubMapImpl implements SubMap {
 
     @Override
     public int id() {
-        return MineScreen.instance().mapIdSupplier().get(guiId, mapX, mapY);
+        return (guiId << 16) + (mapX << 8) + mapY;
     }
 
     @Override

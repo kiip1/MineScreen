@@ -1,7 +1,7 @@
 package nl.kiipdevelopment.minescreen.widget.widgets;
 
 import net.minestom.server.entity.Player;
-import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
+import nl.kiipdevelopment.minescreen.graphics.MapGraphics;
 import nl.kiipdevelopment.minescreen.widget.AbstractWidget;
 import nl.kiipdevelopment.minescreen.widget.Interactable;
 import nl.kiipdevelopment.minescreen.widget.Widget;

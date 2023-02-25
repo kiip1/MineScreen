@@ -1,8 +1,13 @@
-package nl.kiipdevelopment.minescreen.map.graphics;
+package nl.kiipdevelopment.minescreen.graphics;
 
 import net.minestom.server.map.MapColors;
+import nl.kiipdevelopment.minescreen.screen.ScreenGui;
 
 public interface MapGraphics {
+    static MapGraphics of(ScreenGui gui) {
+        return new MapGraphicsImpl(gui);
+    }
+
     default void fill(MapColors.PreciseMapColor color) {
         fill(color.getIndex());
     }

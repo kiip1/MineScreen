@@ -1,4 +1,4 @@
-package nl.kiipdevelopment.minescreen.map.graphics;
+package nl.kiipdevelopment.minescreen.graphics;
 
 import net.minestom.server.utils.validate.Check;
 import nl.kiipdevelopment.minescreen.map.Map;
@@ -7,7 +7,7 @@ import nl.kiipdevelopment.minescreen.screen.ScreenGui;
 
 import java.util.Arrays;
 
-public class MapGraphicsImpl implements MapGraphics {
+sealed class MapGraphicsImpl implements MapGraphics permits RelativeMapGraphicsImpl {
     protected final ScreenGui gui;
     protected final Map map;
 
@@ -29,12 +29,9 @@ public class MapGraphicsImpl implements MapGraphics {
         ensureWithinBounds(endX, endY, "Bottom right");
 
         // TODO: Optimize this somehow
-
-        for (int x = startX; x < endX; x++) {
-            for (int y = startY; y < endY; y++) {
+        for (int x = startX; x < endX; x++)
+            for (int y = startY; y < endY; y++)
                 drawDirectDot(color, x, y);
-            }
-        }
     }
 
     @Override

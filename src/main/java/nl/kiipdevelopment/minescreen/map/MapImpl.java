@@ -4,7 +4,7 @@ import net.minestom.server.entity.Player;
 
 import java.util.Collection;
 
-public class MapImpl implements Map {
+final class MapImpl implements Map {
     private final SubMap[] subs;
     private final int width, height;
 

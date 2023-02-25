@@ -2,7 +2,7 @@ package nl.kiipdevelopment.minescreen.widget;
 
 import net.minestom.server.entity.Player;
 import net.minestom.server.map.MapColors;
-import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
+import nl.kiipdevelopment.minescreen.graphics.MapGraphics;
 import nl.kiipdevelopment.minescreen.widget.widgets.ButtonWidget;
 import nl.kiipdevelopment.minescreen.widget.widgets.ContainerWidget;
 import nl.kiipdevelopment.minescreen.widget.widgets.ImageWidget;
@@ -33,19 +33,18 @@ public interface Widget {
     /**
      * Contains the methods to generate buttons
      */
-    @ApiStatus.Internal
     final class Buttons {
         private Buttons() {}
 
-        public static Widget hover(@NotNull Widget child, @Nullable Hover hover) {
+        public static Widget hover(@NotNull Widget child, @NotNull Hover hover) {
             return new ButtonWidget(child, hover, null);
         }
 
-        public static Widget click(@NotNull Widget child, @Nullable Click click) {
+        public static Widget click(@NotNull Widget child, @NotNull Click click) {
             return new ButtonWidget(child, null, click);
         }
 
-        public static Widget both(@NotNull Widget child, @Nullable Hover hover, @Nullable Click click) {
+        public static Widget both(@NotNull Widget child, @NotNull Hover hover, @NotNull Click click) {
             return new ButtonWidget(child, hover, click);
         }
 
@@ -63,7 +62,6 @@ public interface Widget {
     /**
      * Contains the methods to generate containers
      */
-    @ApiStatus.Internal
     final class Containers {
         private Containers() {}
 
@@ -89,7 +87,6 @@ public interface Widget {
     /**
      * Contains the methods to generate images
      */
-    @ApiStatus.Internal
     final class Images {
         private Images() {}
 
@@ -101,7 +98,6 @@ public interface Widget {
     /**
      * Contains the methods to generate images of players
      */
-    @ApiStatus.Internal
     final class Players {
         private Players() {}
 
@@ -121,7 +117,6 @@ public interface Widget {
     /**
      * Contains the methods to generate renders
      */
-    @ApiStatus.Internal
     final class Renders {
         private Renders() {}
 
@@ -133,7 +128,6 @@ public interface Widget {
     /**
      * Contains the methods to generate shapes
      */
-    @ApiStatus.Internal
     final class Shapes {
         private Shapes() {}
 
@@ -149,7 +143,6 @@ public interface Widget {
     /**
      * Contains the methods to generate spacers
      */
-    @ApiStatus.Internal
     final class Spacers {
         private Spacers() {}
 
@@ -161,7 +154,6 @@ public interface Widget {
     /**
      * Contains the methods to generate wrappers
      */
-    @ApiStatus.Internal
     final class Wrappers {
         private Wrappers() {}
 

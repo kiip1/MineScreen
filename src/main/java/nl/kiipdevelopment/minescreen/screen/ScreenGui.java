@@ -4,30 +4,32 @@ import net.minestom.server.MinecraftServer;
 import net.minestom.server.entity.Player;
 import net.minestom.server.instance.Instance;
 import net.minestom.server.map.MapColors;
-import net.minestom.server.timer.Task;
+import net.minestom.server.timer.ExecutionType;
 import net.minestom.server.utils.time.TimeUnit;
 import net.minestom.server.utils.validate.Check;
-import nl.kiipdevelopment.minescreen.MineScreen;
+import nl.kiipdevelopment.minescreen.graphics.MapGraphics;
 import nl.kiipdevelopment.minescreen.map.Map;
-import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
 import nl.kiipdevelopment.minescreen.util.MathUtils;
 import nl.kiipdevelopment.minescreen.widget.Widget;
 import nl.kiipdevelopment.minescreen.world.GuiInstance;
 import org.jetbrains.annotations.MustBeInvokedByOverriders;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-public class ScreenGui {
+public sealed class ScreenGui permits InteractableScreenGui {
+    private static final Logger LOGGER = LoggerFactory.getLogger(ScreenGui.class);
+
     private final short guiId;
     private final int fps;
     private final GuiInstance guiInstance;
     private final Map map;
     private final MapGraphics mapGraphics;
     private final List<Target> targets = new ArrayList<>();
-    private final Task refreshScreenTask;
 
     private MapColors background = MapColors.NONE;
 
@@ -48,15 +50,19 @@ public class ScreenGui {
         this.guiId = guiId;
         this.fps = fps;
 
-        map = MineScreen.instance().mapSupplier().get(guiId, width, height);
-        guiInstance = MineScreen.instance().guiInstanceSupplier().get(this);
-        mapGraphics = MineScreen.instance().mapGraphicsSupplier().get(this);
+        map = Map.of(this, width, height);
+        guiInstance = GuiInstance.of(this);
+        mapGraphics = MapGraphics.of(this);
 
         guiInstance.placeMaps();
 
-        refreshScreenTask = MinecraftServer.getSchedulerManager()
-                .buildTask(MineScreen.instance().refreshScreenSupplier().get(this))
+        MinecraftServer.getSchedulerManager()
+                .buildTask(() -> {
+                    render(mapGraphics());
+                    sendPacketUpdate();
+                })
                 .repeat(1000 / fps, TimeUnit.MILLISECOND)
+                .executionType(ExecutionType.ASYNC)
                 .schedule();
     }
 
@@ -96,8 +102,7 @@ public class ScreenGui {
         final double loopTime = MathUtils.round((System.nanoTime() - loopStartTime) / 1_000_000D, 2);
         if (loopTime >= 1000d / fps) {
             final double loopTimeTooMuch = MathUtils.round(loopTime - (1000d / fps), 2);
-
-            System.err.printf("Loop took %sms, that's %sms too much.\n", loopTime, loopTimeTooMuch);
+            LOGGER.warn("Loop took {}ms, that's {}ms too much.\n", loopTime, loopTimeTooMuch);
         }
     }
 

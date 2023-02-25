@@ -1,10 +1,15 @@
 package nl.kiipdevelopment.minescreen.map;
 
 import net.minestom.server.entity.Player;
+import nl.kiipdevelopment.minescreen.screen.ScreenGui;
 
 import java.util.Collection;
 
 public interface Map {
+    static Map of(ScreenGui gui, int x, int y) {
+        return new MapImpl(gui.guiId(), x, y);
+    }
+
     int width();
 
     int height();

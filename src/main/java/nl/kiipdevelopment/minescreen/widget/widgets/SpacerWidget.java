@@ -1,7 +1,7 @@
 package nl.kiipdevelopment.minescreen.widget.widgets;
 
 import nl.kiipdevelopment.minescreen.widget.AbstractWidget;
-import nl.kiipdevelopment.minescreen.map.graphics.MapGraphics;
+import nl.kiipdevelopment.minescreen.graphics.MapGraphics;
 import org.jetbrains.annotations.ApiStatus;
 
 @ApiStatus.Internal
