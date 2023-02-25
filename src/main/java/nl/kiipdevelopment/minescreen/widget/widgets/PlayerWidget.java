@@ -33,7 +33,8 @@ public final class PlayerWidget extends AbstractWidget {
 
     @Override
     public void draw(MapGraphics renderer) {
-        image.thenAccept(widget -> widget.draw(renderer));
+        Widget widget = this.image.getNow(null);
+        if (widget != null) widget.draw(renderer);
     }
 
     public enum Type {

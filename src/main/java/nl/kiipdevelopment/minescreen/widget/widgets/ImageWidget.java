@@ -17,7 +17,6 @@ public final class ImageWidget extends AbstractWidget {
 
         width = Math.min(image.getWidth(), width());
         height = Math.min(image.getHeight(), height());
-
         colors = ByteBuffer.allocate(width * height);
 
         for (int x = 0; x < width; x++)

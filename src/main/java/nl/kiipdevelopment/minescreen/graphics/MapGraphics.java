@@ -2,6 +2,7 @@ package nl.kiipdevelopment.minescreen.graphics;
 
 import net.minestom.server.map.MapColors;
 import nl.kiipdevelopment.minescreen.screen.ScreenGui;
+import org.jetbrains.annotations.ApiStatus;
 
 public interface MapGraphics {
     static MapGraphics of(ScreenGui gui) {
@@ -47,6 +48,9 @@ public interface MapGraphics {
     }
 
     void drawDot(byte color, int x, int y);
+
+    @ApiStatus.Internal
+    void drawDirectDot(byte color, int x, int y);
 
     MapGraphics relative(int x, int y, int width, int height);
 }

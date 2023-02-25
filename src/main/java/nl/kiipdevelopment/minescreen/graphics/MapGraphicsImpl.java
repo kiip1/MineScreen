@@ -18,9 +18,8 @@ sealed class MapGraphicsImpl implements MapGraphics permits RelativeMapGraphicsI
 
     @Override
     public void fill(byte color) {
-        for (SubMap subView : gui.map().subs()) {
+        for (SubMap subView : gui.map().subs())
             Arrays.fill(subView.colors(), color);
-        }
     }
 
     @Override
@@ -38,8 +37,6 @@ sealed class MapGraphicsImpl implements MapGraphics permits RelativeMapGraphicsI
     public void drawString(byte color, String value, int x, int y) {
         ensureWithinBounds(x, y);
 
-        // TODO: Implement
-
         throw new UnsupportedOperationException("MapGraphicsImpl#drawString isn't implemented yet.");
     }
 
@@ -50,7 +47,8 @@ sealed class MapGraphicsImpl implements MapGraphics permits RelativeMapGraphicsI
         drawDirectDot(color, x, y);
     }
 
-    protected void drawDirectDot(byte color, int x, int y) {
+    @Override
+    public void drawDirectDot(byte color, int x, int y) {
         Map.SubMapAndIndex subMapAndIndex = map.sub(x, y);
 
         subMapAndIndex.map().colors()[subMapAndIndex.index()] = color;

@@ -1,20 +1,17 @@
 package nl.kiipdevelopment.minescreen.demo;
 
-import net.kyori.adventure.text.Component;
 import net.minestom.server.map.MapColors;
 import nl.kiipdevelopment.minescreen.screen.InteractableScreenGui;
 import nl.kiipdevelopment.minescreen.screen.ScreenGui;
 import nl.kiipdevelopment.minescreen.widget.Widget;
+import org.jetbrains.skija.Bitmap;
 import org.jetbrains.skija.Canvas;
+import org.jetbrains.skija.Image;
 import org.jetbrains.skija.Paint;
 import org.jetbrains.skija.PaintMode;
 import org.jetbrains.skija.Point;
 import org.jetbrains.skija.Surface;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -24,10 +21,18 @@ final class TestGui {
     private TestGui() {}
 
     public static ScreenGui init() {
-        InteractableScreenGui gui = new InteractableScreenGui((short) 1, 512, 512, 20);
+        final InteractableScreenGui gui = new InteractableScreenGui((short) 1, 512, 512, 20);
 
         // Set background color
         gui.updateBackground(MapColors.COLOR_BLACK);
+
+        // Triangle help
+        final Random random = ThreadLocalRandom.current();
+        final Point[] triangle = new Point[] {
+                new Point(random.nextInt(128), random.nextInt(128)),
+                new Point(random.nextInt(128), random.nextInt(128)),
+                new Point(random.nextInt(128), random.nextInt(128))
+        };
 
         // Create container
         Widget containerWidget = Containers.column(
@@ -36,44 +41,40 @@ final class TestGui {
             Containers.row(
                 448,
                 214,
-                Buttons.click(
-                    Containers.stack(
-                        128,
-                        128,
-                        Shapes.square(128, 128, 0, 0, MapColors.COLOR_GREEN),
-                        Shapes.square(127, 127, 1, 1, MapColors.COLOR_LIGHT_GREEN)
-                    ),
-                    (player1, x, y) -> {
-                        player1.sendMessage(Component.text("GREEN"));
-                        gui.updateBackground(MapColors.COLOR_GREEN);
-                    }
+                Containers.grid(
+                    10,
+                    128,
+                    128,
+                    colorButton(gui, MapColors.COLOR_RED),
+                    colorButton(gui, MapColors.COLOR_ORANGE),
+                    colorButton(gui, MapColors.COLOR_YELLOW),
+                    colorButton(gui, MapColors.COLOR_GREEN),
+                    colorButton(gui, MapColors.COLOR_BLUE),
+                    colorButton(gui, MapColors.COLOR_PINK),
+                    colorButton(gui, MapColors.SNOW),
+                    colorButton(gui, MapColors.COLOR_BLACK)
                 ),
                 Spacers.spacer(10, 10),
-                Buttons.click(
-                    Containers.stack(
-                        128,
-                        128,
-                        Shapes.square(128, 128, 0, 0, MapColors.COLOR_BLUE),
-                        Shapes.square(127, 127, 1, 1, MapColors.COLOR_LIGHT_BLUE)
-                    ),
-                    (player1, x, y) -> {
-                        player1.sendMessage(Component.text("BLUE"));
-                        gui.updateBackground(MapColors.COLOR_BLUE);
+                Wrappers.wrapper(() -> {
+                    Widget[] widget = new Widget[10];
+                    for (int i = 0; i < 10; i++) {
+                        widget[i] = Spacers.offset(
+                            random.nextInt(64),
+                            random.nextInt(64),
+                            Shapes.rectangle(
+                                random.nextInt(64),
+                                random.nextInt(64),
+                                MapColors.values()[random.nextInt(MapColors.values().length)]
+                            )
+                        );
                     }
-                ),
-                Spacers.spacer(10, 10),
-                Buttons.click(
-                        Containers.stack(
-                                128,
-                                128,
-                                Shapes.square(128, 128, 0, 0, MapColors.COLOR_BLACK),
-                                Shapes.square(127, 127, 1, 1, MapColors.COLOR_GRAY)
-                        ),
-                        (player1, x, y) -> {
-                            player1.sendMessage(Component.text("BLACK"));
-                            gui.updateBackground(MapColors.COLOR_BLACK);
-                        }
-                )
+
+                    return Containers.stack(
+                            128,
+                            128,
+                            widget
+                    );
+                })
             ),
             Containers.row(
                 448,
@@ -92,29 +93,33 @@ final class TestGui {
                             .setColor(0xFF1D7AA2)
                             .setMode(PaintMode.STROKE)
                             .setStrokeWidth(1f);
-                    Random random = ThreadLocalRandom.current();
+                    for (int i = 0; i < triangle.length; i++) {
+                        Point point = triangle[i];
+                        point = point.offset(random.nextInt(-1, 2), random.nextInt(-1, 2));
+                        if (point.getX() < 0) point = new Point(0, point.getY());
+                        if (point.getX() > 128) point = new Point(128, point.getY());
+                        if (point.getY() < 0) point = new Point(point.getX(), 0);
+                        if (point.getY() > 128) point = new Point(point.getX(), 128);
+
+                        triangle[i] = point;
+                    }
                     canvas.drawTriangles(
-                            new Point[] {
-                                    new Point(random.nextInt(128), random.nextInt(128)),
-                                    new Point(random.nextInt(128), random.nextInt(128)),
-                                    new Point(random.nextInt(128), random.nextInt(128))
-                            },
+                            triangle,
                             new int[] { 0xFFFF0000, 0xFF00FF00, 0xFF0000FF },
                             paint
                     );
 
                     // Render
-                    // TODO This can be better
-                    try {
-                        BufferedImage buffer = ImageIO.read(new ByteArrayInputStream(surface.makeImageSnapshot().encodeToData().getBytes()));
-                        for (int x = 0; x < 128; x++) {
-                            for (int y = 0; y < 128; y++) {
-                                MapColors.PreciseMapColor color = MapColors.closestColor(buffer.getRGB(x, y));
-                                graphics.drawDot(color.getBaseColor(), x, y);
-                            }
+                    surface.flush();
+                    Image image = surface.makeImageSnapshot();
+                    Bitmap bitmap = new Bitmap();
+                    bitmap.allocN32Pixels(128, 128);
+                    image.readPixels(bitmap);
+
+                    for (int x = 0; x < 128; x++) {
+                        for (int y = 0; y < 128; y++) {
+                            graphics.drawDirectDot(MapColors.closestColor(bitmap.getColor(x, y)).getIndex(), x, y);
                         }
-                    } catch (IOException e) {
-                        throw new RuntimeException(e);
                     }
                 })
             )
@@ -149,5 +154,17 @@ final class TestGui {
         gui.addWidget(mouseWidget);
 
         return gui;
+    }
+
+    private static Widget colorButton(ScreenGui gui, MapColors color) {
+        return Buttons.click(
+                Containers.stack(
+                        36,
+                        36,
+                        Shapes.square(36, MapColors.STONE),
+                        Spacers.offset(1, 1, Shapes.square(34, color))
+                ),
+                (player, x, y) -> gui.updateBackground(color)
+        );
     }
 }

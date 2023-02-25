@@ -3,8 +3,11 @@ package nl.kiipdevelopment.minescreen.graphics;
 import nl.kiipdevelopment.minescreen.screen.ScreenGui;
 
 final class RelativeMapGraphicsImpl extends MapGraphicsImpl {
-    private final int x, y;
-    private final int width, height;
+    private final int x;
+    private final int y;
+
+    private final int width;
+    private final int height;
 
     public RelativeMapGraphicsImpl(ScreenGui gui, int x, int y, int width, int height) {
         super(gui);
@@ -21,46 +24,26 @@ final class RelativeMapGraphicsImpl extends MapGraphicsImpl {
     }
 
     @Override
-    public void drawRectangle(byte color, int startX, int startY, int endX, int endY) {
-        startX = fixX(startX);
-        startY = fixY(startY);
-        endX = fixX(endX);
-        endY = fixY(endY);
-
-        super.drawRectangle(color, startX, startY, endX, endY);
-    }
-
-    @Override
-    public void drawString(byte color, String value, int x, int y) {
-        x = fixX(x);
-        y = fixY(y);
-
-        super.drawString(color, value, x, y);
-    }
-
-    @Override
-    public void drawDot(byte color, int x, int y) {
-        x = fixX(x);
-        y = fixY(y);
-
-        super.drawDot(color, x, y);
+    public void drawDirectDot(byte color, int x, int y) {
+        super.drawDirectDot(color, absX(x), absY(y));
     }
 
     @Override
     public MapGraphics relative(int x, int y, int width, int height) {
-        x = fixX(x);
-        y = fixY(y);
-        width = fixX(width);
-        height = fixY(height);
-
-        return super.relative(x, y, width, height);
+        return new RelativeMapGraphicsImpl(
+                gui,
+                absX(x) - (absX(x) + width > this.x + this.width ? width : 0),
+                absY(y) - (absY(y) + height > this.y + this.height ? height : 0),
+                Math.min(width, this.width),
+                Math.min(height, this.height)
+        );
     }
 
-    private int fixX(int x) {
-        return x + this.x;
+    private int absX(int x) {
+        return this.x + Math.min(x, width);
     }
 
-    private int fixY(int y) {
-        return y + this.y;
+    private int absY(int y) {
+        return this.y + Math.min(y, height);
     }
 }

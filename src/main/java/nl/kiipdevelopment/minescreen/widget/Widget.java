@@ -5,6 +5,7 @@ import net.minestom.server.map.MapColors;
 import nl.kiipdevelopment.minescreen.graphics.MapGraphics;
 import nl.kiipdevelopment.minescreen.widget.widgets.ButtonWidget;
 import nl.kiipdevelopment.minescreen.widget.widgets.ContainerWidget;
+import nl.kiipdevelopment.minescreen.widget.widgets.GridWidget;
 import nl.kiipdevelopment.minescreen.widget.widgets.ImageWidget;
 import nl.kiipdevelopment.minescreen.widget.widgets.PlayerWidget;
 import nl.kiipdevelopment.minescreen.widget.widgets.RenderWidget;
@@ -64,6 +65,12 @@ public interface Widget {
      */
     final class Containers {
         private Containers() {}
+
+        public static Widget grid(int spacing, int width, int height, @Nullable Widget... widgets) {
+            return new GridWidget(spacing, width, height, Arrays.stream(widgets)
+                    .filter(Objects::nonNull)
+                    .toList());
+        }
 
         public static Widget row(int width, int height, @Nullable Widget... widgets) {
             return new ContainerWidget(ContainerWidget.Type.ROW, width, height, Arrays.stream(widgets)
@@ -131,12 +138,12 @@ public interface Widget {
     final class Shapes {
         private Shapes() {}
 
-        public static Widget rectangle(int width, int height, int xOffset, int yOffset, MapColors color) {
-            return new ShapeWidget(ShapeWidget.Type.RECTANGLE, width, height, xOffset, yOffset, color);
+        public static Widget rectangle(int width, int height, MapColors color) {
+            return new ShapeWidget(ShapeWidget.Type.RECTANGLE, width, height, color);
         }
 
-        public static Widget square(int width, int height, int xOffset, int yOffset, MapColors color) {
-            return new ShapeWidget(ShapeWidget.Type.SQUARE, width, height, xOffset, yOffset, color);
+        public static Widget square(int length, MapColors color) {
+            return new ShapeWidget(ShapeWidget.Type.SQUARE, length, length, color);
         }
     }
 
@@ -147,7 +154,11 @@ public interface Widget {
         private Spacers() {}
 
         public static Widget spacer(int width, int height) {
-            return new SpacerWidget(width, height);
+            return new SpacerWidget(width, height, null);
+        }
+
+        public static Widget offset(int width, int height, @NotNull Widget widget) {
+            return new SpacerWidget(width, height, widget);
         }
     }
 

@@ -1,13 +1,15 @@
 package nl.kiipdevelopment.minescreen.widget.widgets;
 
+import net.minestom.server.entity.Player;
 import nl.kiipdevelopment.minescreen.graphics.MapGraphics;
+import nl.kiipdevelopment.minescreen.widget.Interactable;
 import nl.kiipdevelopment.minescreen.widget.Widget;
 import org.jetbrains.annotations.ApiStatus;
 
 import java.util.function.Supplier;
 
 @ApiStatus.Internal
-public final class WrapperWidget implements Widget {
+public final class WrapperWidget implements Widget, Interactable {
     private Supplier<Widget> supplier;
     private Widget widget;
 
@@ -36,4 +38,17 @@ public final class WrapperWidget implements Widget {
     public int height() {
         return widget == null ? 0 : widget.height();
     }
+
+    @Override
+    public void onHover(Player player, int x, int y) {
+        if (widget instanceof Interactable interactable)
+            interactable.onHover(player, x, y);
+    }
+
+    @Override
+    public void onClick(Player player, int x, int y) {
+        if (widget instanceof Interactable interactable)
+            interactable.onClick(player, x, y);
+    }
+
 }

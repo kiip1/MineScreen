@@ -3,7 +3,6 @@ package nl.kiipdevelopment.minescreen.map;
 import net.minestom.server.entity.Player;
 import net.minestom.server.network.packet.server.SendablePacket;
 import net.minestom.server.network.packet.server.play.MapDataPacket;
-import net.minestom.server.utils.PacketUtils;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -74,9 +73,9 @@ final class SubMapImpl implements SubMap {
 
     @Override
     public void sendPacket(Collection<Player> players) {
-        final SendablePacket packet = PacketUtils.allocateTrimmedPacket(new MapDataPacket(
+        final SendablePacket packet = new MapDataPacket(
                 id(), (byte) 1, true, false, List.of(),
-                new MapDataPacket.ColorContent((byte) width, (byte) height, (byte) 0, (byte) 0, colors)));
+                new MapDataPacket.ColorContent((byte) width, (byte) height, (byte) 0, (byte) 0, colors));
         for (Player player : players)
             player.sendPacket(packet);
     }

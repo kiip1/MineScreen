@@ -1,6 +1,7 @@
 package nl.kiipdevelopment.minescreen.demo;
 
 import net.minestom.server.MinecraftServer;
+import net.minestom.server.attribute.Attribute;
 import net.minestom.server.coordinate.Pos;
 import net.minestom.server.entity.GameMode;
 import net.minestom.server.entity.Player;
@@ -24,6 +25,7 @@ public final class Test {
             Player player = event.getPlayer();
             player.setPermissionLevel(4);
             player.setGameMode(GameMode.ADVENTURE);
+            player.getAttribute(Attribute.ATTACK_SPEED).setBaseValue(100f);
             gui.show(player);
         });
         MojangAuth.init();

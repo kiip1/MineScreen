@@ -18,8 +18,7 @@ public final class RenderWidget extends AbstractWidget {
 
     @Override
     public void draw(MapGraphics renderer) {
-        if (draw != null) {
+        if (draw != null)
             draw.accept(renderer);
-        }
     }
 }

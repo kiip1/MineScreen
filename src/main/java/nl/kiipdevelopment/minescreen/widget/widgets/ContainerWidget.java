@@ -43,7 +43,7 @@ public final class ContainerWidget extends AbstractWidget implements Interactabl
             }
             case STACK -> {
                 for (Widget widget : widgets) {
-                    widget.draw(renderer.relative(0, 0, widget.width(), widget.height()));
+                    widget.draw(renderer);
                 }
             }
         }
@@ -84,11 +84,8 @@ public final class ContainerWidget extends AbstractWidget implements Interactabl
             }
             case STACK -> {
                 for (Widget widget : widgets) {
-                    if (widget instanceof Interactable interactable) {
-                        if (x <= widget.width() && y <= widget.height()) {
-                            interactable.onHover(player, x, y);
-                        }
-                    }
+                    if (widget instanceof Interactable interactable && x <= widget.width() && y <= widget.height())
+                        interactable.onHover(player, x, y);
                 }
             }
         }
@@ -129,11 +126,8 @@ public final class ContainerWidget extends AbstractWidget implements Interactabl
             }
             case STACK -> {
                 for (Widget widget : widgets) {
-                    if (widget instanceof Interactable interactable) {
-                        if (x <= widget.width() && y <= widget.height()) {
-                            interactable.onClick(player, x, y);
-                        }
-                    }
+                    if (widget instanceof Interactable interactable && x <= widget.width() && y <= widget.height())
+                        interactable.onClick(player, x, y);
                 }
             }
         }
